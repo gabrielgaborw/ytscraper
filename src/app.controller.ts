@@ -1,12 +1,18 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+// import { AppService } from './app.service';
+import axios from 'axios';
+import cheerio from 'cheerio';
 
-@Controller()
-export class AppController {
-  constructor(private readonly appService: AppService) {}
-
+@Controller('yt')
+export class YTController {
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  async getData(): Promise<any> {
+    const response = await axios.get(
+      'https://www.youtube.com/watch?v=-ZMwRnxIxZY',
+    );
+    const $ = cheerio.load(response.data);
+    // const newData = response.data;
+    console.log($('title').text());
+    return 'Done';
   }
 }
